@@ -35,3 +35,16 @@ jobs:
 
     - name: Test
       run: go test -v .
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: fetchsdcc
+        path: ./fetchsdcc
+    - name: GitHub Releases
+      uses: fnkr/github-action-ghr@v1.3
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_COMPRESS: xz
+        GHR_PATH: ./fetchsdcc
+        GITHUB_TOKEN: ${{ secrets.release }}
